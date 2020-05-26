@@ -30,15 +30,12 @@ public class SizeTest {
         assertEquals(parse.getQuantity(), 24000, 0);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowExceptionIfTheGivenSizeHasDifferentSuffix() {
-        Size parse = Size.parse("24000kig");
-    }
 
-
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowExceptionIfTheGivenSizeHasNoUint() {
+    @Test
+    public void shouldAssumeBytesIfTheGivenSizeHasNoUnit() {
         Size parse = Size.parse("24000");
+        assertEquals(parse.getUnit(), SizeUnit.BYTES);
+        assertEquals(parse.getQuantity(), 24000, 0);
     }
 
     @Test

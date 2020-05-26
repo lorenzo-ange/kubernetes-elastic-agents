@@ -29,7 +29,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Objects.requireNonNull;
 
 public class Size implements Comparable<Size> {
-    private static final Pattern SIZE_PATTERN = Pattern.compile("(\\d+)\\s*(\\S+)");
+    private static final Pattern SIZE_PATTERN = Pattern.compile("(\\d+)\\s*(\\S*)");
 
     private static final Map<String, SizeUnit> SUFFIXES = ImmutableSortedMap.<String, SizeUnit>orderedBy(String.CASE_INSENSITIVE_ORDER)
             .put("B", SizeUnit.BYTES)
@@ -93,10 +93,7 @@ public class Size implements Comparable<Size> {
         checkArgument(matcher.matches(), "Invalid size: " + size);
 
         final double count = Double.parseDouble(matcher.group(1));
-        final SizeUnit unit = SUFFIXES.get(matcher.group(2));
-        if (unit == null) {
-            throw new IllegalArgumentException("Invalid size: " + size + ". Wrong size unit");
-        }
+        final SizeUnit unit = SUFFIXES.getOrDefault(matcher.group(2), SizeUnit.BYTES);
 
         return new Size(count, unit);
     }
